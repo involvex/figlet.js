@@ -9,7 +9,9 @@
     "banner",
     "ansi"
   ],
-  "bin": "./bin/index.js",
+  "bin": {
+    "figlet": "./bin/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/involvex/figlet.js.git"
