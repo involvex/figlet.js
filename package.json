@@ -1,5 +1,5 @@
 {
-  "name": "figlet",
+  "name": "@involvex/figlet",
   "version": "1.10.0",
   "description": "Creates ASCII Art from text. A full implementation of the FIGfont spec.",
   "keywords": [
@@ -12,15 +12,13 @@
   "bin": "./bin/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/patorjk/figlet.js.git"
+    "url": "https://github.com/involvex/figlet.js.git"
   },
   "bugs": {
-    "url": "https://github.com/patorjk/figlet.js/issues"
+    "url": "https://github.com/involvex/figlet.js/issues"
   },
   "author": {
-    "name": "Patrick Gillespie",
-    "email": "patorjk@gmail.com",
-    "url": "http://patorjk.com/"
+    "name": "Involvex"
   },
   "license": "MIT",
   "type": "module",

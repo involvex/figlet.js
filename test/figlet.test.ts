@@ -1,25 +1,40 @@
 // test/node-figlet.test.ts
-import {describe, it, vi, beforeEach, afterEach, expect, beforeAll, MockInstance} from 'vitest';
-import fs from 'fs';
-import path from 'path';
-import figlet from '../src/figlet'; // Import from src instead of lib
-import fontData from '../importable-fonts/Standard'
-import miniwi from '../importable-fonts/miniwi'
+import {
+  describe,
+  it,
+  vi,
+  beforeEach,
+  afterEach,
+  expect,
+  beforeAll,
+  MockInstance,
+} from "vitest";
+import fs from "fs";
+import path from "path";
+import figlet from "../src/figlet"; // Import from src instead of lib
+import fontData from "../importable-fonts/Standard";
+import miniwi from "../importable-fonts/miniwi";
 
-describe('figlet', () => {
+describe("figlet", () => {
   let fetchSpy: MockInstance<{
     (input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
-    (input: string | URL | globalThis.Request, init?: RequestInit): Promise<Response>;
+    (
+      input: string | URL | globalThis.Request,
+      init?: RequestInit,
+    ): Promise<Response>;
   }>;
 
   // Helper function to read expected output files
   const readExpected = (filename: string): string => {
-    return fs.readFileSync(path.join(__dirname, `expected/${filename}`), 'utf8');
+    return fs.readFileSync(
+      path.join(__dirname, `expected/${filename}`),
+      "utf8",
+    );
   };
 
   // Setup for font registration tests
   beforeEach(() => {
-    fetchSpy = vi.spyOn(global, 'fetch');
+    fetchSpy = vi.spyOn(global, "fetch");
   });
 
   afterEach(() => {
@@ -30,17 +45,15 @@ describe('figlet', () => {
     });
   });
 
-  describe('preloadFonts tests', () => {
-
-    it('preloadFonts should execute without error when valid data is given', async () => {
-
+  describe("preloadFonts tests", () => {
+    it("preloadFonts should execute without error when valid data is given", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
 
       const mockResponse = {
         ok: true,
-        statusText: 'OK',
+        statusText: "OK",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -52,13 +65,12 @@ describe('figlet', () => {
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      await figlet.preloadFonts(['Standard', 'Graffiti']);
+      await figlet.preloadFonts(["Standard", "Graffiti"]);
 
-      expect(figlet.loadedFonts()).toStrictEqual(['Standard', 'Graffiti']);
+      expect(figlet.loadedFonts()).toStrictEqual(["Standard", "Graffiti"]);
     });
 
-    it('preloadFonts should execute without error and execute its callback', async () => {
-
+    it("preloadFonts should execute without error and execute its callback", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
@@ -66,7 +78,7 @@ describe('figlet', () => {
 
       const mockResponse = {
         ok: true,
-        statusText: 'OK',
+        statusText: "OK",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -78,23 +90,22 @@ describe('figlet', () => {
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      figlet.preloadFonts(['Standard', 'Graffiti'], mockCallback);
+      figlet.preloadFonts(["Standard", "Graffiti"], mockCallback);
 
-      await new Promise(resolve => setTimeout(resolve, 100)); // give time for the callback to execute
+      await new Promise((resolve) => setTimeout(resolve, 100)); // give time for the callback to execute
 
       expect(mockCallback).toHaveBeenCalledWith();
-      expect(figlet.loadedFonts()).toStrictEqual(['Standard', 'Graffiti']);
+      expect(figlet.loadedFonts()).toStrictEqual(["Standard", "Graffiti"]);
     });
 
-    it('preloadFonts should throw an error when fetch fails', async () => {
-
+    it("preloadFonts should throw an error when fetch fails", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
 
       const mockResponse = {
         ok: false,
-        statusText: 'Oopsy!',
+        statusText: "Oopsy!",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -104,11 +115,12 @@ describe('figlet', () => {
         fontPath: `${directoryPath}/../fonts`,
       });
 
-      await expect(figlet.preloadFonts(['Standard', 'Graffiti'])).rejects.toThrow();
+      await expect(
+        figlet.preloadFonts(["Standard", "Graffiti"]),
+      ).rejects.toThrow();
     });
 
-    it('preloadFonts should pass the error to its callback if its provided', async () => {
-
+    it("preloadFonts should pass the error to its callback if its provided", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
@@ -116,7 +128,7 @@ describe('figlet', () => {
 
       const mockResponse = {
         ok: false,
-        statusText: 'Oopsy!',
+        statusText: "Oopsy!",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -126,9 +138,9 @@ describe('figlet', () => {
         fontPath: `${directoryPath}/../fonts`,
       });
 
-      figlet.preloadFonts(['Standard', 'Graffiti'], mockCallback);
+      figlet.preloadFonts(["Standard", "Graffiti"], mockCallback);
 
-      await new Promise(resolve => setTimeout(resolve, 100)); // give time for the callback to execute
+      await new Promise((resolve) => setTimeout(resolve, 100)); // give time for the callback to execute
 
       expect(mockCallback).toHaveBeenCalledWith(expect.any(Error));
     });
@@ -136,14 +148,13 @@ describe('figlet', () => {
 
   // -------------------------------------------------------------------------------------------------------------------
 
-  describe('loadFont tests', () => {
-
+  describe("loadFont tests", () => {
     beforeEach(() => {
       figlet.clearLoadedFonts();
     });
 
     const standardMeta = {
-      hardBlank: '$',
+      hardBlank: "$",
       height: 6,
       baseline: 5,
       maxLength: 16,
@@ -165,19 +176,18 @@ describe('figlet', () => {
         hRule4: true,
         hRule3: true,
         hRule2: true,
-        hRule1: true
-      }
+        hRule1: true,
+      },
     };
 
-    it('loadFont should execute without error for valid inputs', async () => {
-
+    it("loadFont should execute without error for valid inputs", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
 
       const mockResponse = {
         ok: true,
-        statusText: 'OK',
+        statusText: "OK",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -189,13 +199,12 @@ describe('figlet', () => {
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      const meta = await figlet.loadFont('Standard');
+      const meta = await figlet.loadFont("Standard");
       expect(meta).toEqual(standardMeta);
-      expect(figlet.loadedFonts()).toStrictEqual(['Standard']);
+      expect(figlet.loadedFonts()).toStrictEqual(["Standard"]);
     });
 
-    it('loadFont should execute without error for valid inputs and pass its return data to its callback', async () => {
-
+    it("loadFont should execute without error for valid inputs and pass its return data to its callback", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
@@ -203,7 +212,7 @@ describe('figlet', () => {
 
       const mockResponse = {
         ok: true,
-        statusText: 'OK',
+        statusText: "OK",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -213,23 +222,21 @@ describe('figlet', () => {
         fontPath: `${directoryPath}/../fonts`,
       });
 
-      figlet.loadFont('Standard', mockCallback);
+      figlet.loadFont("Standard", mockCallback);
 
-      await new Promise(resolve => setTimeout(resolve, 100)); // give time for the callback to execute
+      await new Promise((resolve) => setTimeout(resolve, 100)); // give time for the callback to execute
 
       expect(mockCallback).toHaveBeenCalledWith(null, standardMeta);
-
     });
 
-    it('loadFont should throw an error when fetch fails', async () => {
-
+    it("loadFont should throw an error when fetch fails", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
 
       const mockResponse = {
         ok: false,
-        statusText: 'Oopsy!',
+        statusText: "Oopsy!",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -239,11 +246,10 @@ describe('figlet', () => {
         fontPath: `${directoryPath}/../fonts`,
       });
 
-      await expect(figlet.loadFont('Standard')).rejects.toThrow();
+      await expect(figlet.loadFont("Standard")).rejects.toThrow();
     });
 
-    it('loadFont should pass the error to its callback if its provided', async () => {
-
+    it("loadFont should pass the error to its callback if its provided", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
@@ -251,7 +257,7 @@ describe('figlet', () => {
 
       const mockResponse = {
         ok: false,
-        statusText: 'Oopsy!',
+        statusText: "Oopsy!",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -261,36 +267,34 @@ describe('figlet', () => {
         fontPath: `${directoryPath}/../fonts`,
       });
 
-      figlet.loadFont('Standard', mockCallback);
+      figlet.loadFont("Standard", mockCallback);
 
-      await new Promise(resolve => setTimeout(resolve, 100)); // give time for the callback to execute
+      await new Promise((resolve) => setTimeout(resolve, 100)); // give time for the callback to execute
 
       expect(mockCallback).toHaveBeenCalledWith(expect.any(Error));
     });
 
-    it('fetchFontIfMissing should be respected when false', async () => {
-
+    it("fetchFontIfMissing should be respected when false", async () => {
       figlet.defaults({
         fetchFontIfMissing: false,
       });
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      await expect(figlet.loadFont('Unknown-Font')).rejects.toThrow();
+      await expect(figlet.loadFont("Unknown-Font")).rejects.toThrow();
 
       expect(fetchSpy).not.toHaveBeenCalled();
       expect(figlet.loadedFonts()).toStrictEqual([]);
     });
 
-    it('fetchFontIfMissing should be respected when true', async () => {
-
+    it("fetchFontIfMissing should be respected when true", async () => {
       figlet.defaults({
         fetchFontIfMissing: true,
       });
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      await expect(figlet.loadFont('Unknown-Font')).rejects.toThrow();
+      await expect(figlet.loadFont("Unknown-Font")).rejects.toThrow();
 
       expect(fetchSpy).toHaveBeenCalled();
       expect(figlet.loadedFonts()).toStrictEqual([]);
@@ -298,20 +302,18 @@ describe('figlet', () => {
   });
 
   // -------------------------------------------------------------------------------------------------------------------
-  describe('text tests', () => {
+  describe("text tests", () => {
+    const expected = readExpected("standard_default");
+    const text = "FIGlet\nFonts";
 
-    const expected = readExpected('standard_default');
-    const text = 'FIGlet\nFonts';
-
-    it('text should execute without error for valid inputs', async () => {
-
+    it("text should execute without error for valid inputs", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
 
       const mockResponse = {
         ok: true,
-        statusText: 'OK',
+        statusText: "OK",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -323,16 +325,15 @@ describe('figlet', () => {
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      const output = await figlet.text(text, 'Standard');
-      const output2 = await figlet(text, 'Standard');
+      const output = await figlet.text(text, "Standard");
+      const output2 = await figlet(text, "Standard");
 
       expect(output).toEqual(expected);
       expect(output2).toEqual(expected);
-      expect(figlet.loadedFonts()).toStrictEqual(['Standard']);
+      expect(figlet.loadedFonts()).toStrictEqual(["Standard"]);
     });
 
-    it('text should execute without error for valid inputs and pass its return data to its callback', async () => {
-
+    it("text should execute without error for valid inputs and pass its return data to its callback", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
@@ -341,7 +342,7 @@ describe('figlet', () => {
 
       const mockResponse = {
         ok: true,
-        statusText: 'OK',
+        statusText: "OK",
         text: () => Promise.resolve(fontData),
       };
       // @ts-ignore
@@ -353,29 +354,27 @@ describe('figlet', () => {
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      await figlet.text(text, 'Standard', mockCallback);
-      await figlet(text, 'Standard', mockCallback2);
+      await figlet.text(text, "Standard", mockCallback);
+      await figlet(text, "Standard", mockCallback2);
 
-      await new Promise(resolve => setTimeout(resolve, 100)); // give time for the callback to execute
+      await new Promise((resolve) => setTimeout(resolve, 100)); // give time for the callback to execute
 
       expect(mockCallback).toHaveBeenCalledWith(null, expected);
       expect(mockCallback2).toHaveBeenCalledWith(null, expected);
-      expect(figlet.loadedFonts()).toStrictEqual(['Standard']);
-
+      expect(figlet.loadedFonts()).toStrictEqual(["Standard"]);
     });
 
-    it('text should allow empty lines in output', async () => {
-
+    it("text should allow empty lines in output", async () => {
       const localPath = import.meta.url;
       const lastSlashIndex = localPath.lastIndexOf("/");
       const directoryPath = localPath.substring(0, lastSlashIndex);
 
-      const expected = readExpected('miniwi_multiline');
-      const multilineText = 'This\n\nis\n\n\na test'
+      const expected = readExpected("miniwi_multiline");
+      const multilineText = "This\n\nis\n\n\na test";
 
       const mockResponse = {
         ok: true,
-        statusText: 'OK',
+        statusText: "OK",
         text: () => Promise.resolve(miniwi),
       };
       // @ts-ignore
@@ -387,12 +386,12 @@ describe('figlet', () => {
 
       expect(figlet.loadedFonts()).toStrictEqual([]);
 
-      const output = await figlet.text(multilineText, 'miniwi');
-      const output2 = await figlet(multilineText, 'miniwi');
+      const output = await figlet.text(multilineText, "miniwi");
+      const output2 = await figlet(multilineText, "miniwi");
 
       expect(output).toEqual(expected);
       expect(output2).toEqual(expected);
-      expect(figlet.loadedFonts()).toStrictEqual(['miniwi']);
+      expect(figlet.loadedFonts()).toStrictEqual(["miniwi"]);
     });
   });
 });

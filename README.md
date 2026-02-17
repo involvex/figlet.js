@@ -1,10 +1,10 @@
 ```
-___________.___  ________.__          __          __             /\   __          
+___________.___  ________.__          __          __             /\   __
 \_   _____/|   |/  _____/|  |   _____/  |_       |__| ______    / / _/  |_  ______
  |    __)  |   /   \  ___|  | _/ __ \   __\      |  |/  ___/   / /  \   __\/  ___/
- |     \   |   \    \_\  \  |_\  ___/|  |        |  |\___ \   / /    |  |  \___ \ 
+ |     \   |   \    \_\  \  |_\  ___/|  |        |  |\___ \   / /    |  |  \___ \
  \___  /   |___|\______  /____/\___  >__| /\ /\__|  /____  > / /     |__| /____  >
-     \/                \/          \/     \/ \______|    \/  \/                \/ 
+     \/                \/          \/     \/ \______|    \/  \/                \/
 ```
 
 [![NPM Downloads](https://img.shields.io/npm/dt/figlet.svg?style=flat)](https://npmcharts.com/compare/figlet?minimal=true)
@@ -35,7 +35,7 @@ doStuff();
 Or the classic callback version:
 
 ```js
-const figlet = require('figlet');
+const figlet = require("figlet");
 
 figlet("Hello World!!", function (err, data) {
   if (err) {
@@ -88,7 +88,7 @@ figlet.text(
       return;
     }
     console.log(data);
-  }
+  },
 );
 ```
 
@@ -117,7 +117,7 @@ try {
       verticalLayout: "default",
       width: 80,
       whitespaceBreak: true,
-    })
+    }),
   );
 } catch (err) {
   console.log("Something went wrong...");
@@ -144,7 +144,7 @@ console.log(
     verticalLayout: "default",
     width: 80,
     whitespaceBreak: true,
-  })
+  }),
 );
 ```
 
@@ -316,7 +316,7 @@ figlet.defaults({
   font: "Standard", // default font
   fontPath: "some-random-place/fonts", // default font path location
   fetchFontIfMissing: true, // for the browser, fetch a font if its missing
-})
+});
 ```
 
 ## Getting Started - Browser with ES modules
@@ -438,7 +438,7 @@ Thanks goes to these people: ([emoji key](https://allcontributors.org/docs/en/em
 
 ## Release History
 
-- 2025.12.25 v1.10.0 Renamed "ANSI-Compact" to "ANSI Compact" (with backward compatibility). Added the fonts: Classy, Coder Mini, and Font Font. Fixed the "U" characters in the "Isometric 4" font. 
+- 2025.12.25 v1.10.0 Renamed "ANSI-Compact" to "ANSI Compact" (with backward compatibility). Added the fonts: Classy, Coder Mini, and Font Font. Fixed the "U" characters in the "Isometric 4" font.
 - 2025.11.15 v1.9.4 Added the "ANSI-Compact" font and adjustments for older versions of Node
 - 2025.09.17 v1.9.3 Type fix for figlet module base call (when calling figlet as shorthand for figlet.text)
 - 2025.09.15 v1.9.2 Type fix for figlet module for TypeScript with Node
@@ -461,4 +461,3 @@ Thanks goes to these people: ([emoji key](https://allcontributors.org/docs/en/em
 - 2014.07.31 v1.0.1 Bug fixes.
 - 2013.12.28 v1.0.7 README update and minor tweaks.
 - 2013.01.02 v1.0.8 Added tests and command line info.
-
