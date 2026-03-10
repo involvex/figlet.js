@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const sourceDir = 'utils/cjs-types';
-const destDir = 'dist/types/cjs';
+const sourceDir = "utils/cjs-types";
+const destDir = "dist/types/cjs";
 
 /**
  * Recursively copy files and directories from source to destination
@@ -18,12 +18,12 @@ function copyRecursive(src, dest) {
 
   // Create destination directory if it doesn't exist
   if (!fs.existsSync(dest)) {
-    fs.mkdirSync(dest, {recursive: true});
+    fs.mkdirSync(dest, { recursive: true });
     console.log(`📁 Created directory: ${dest}`);
   }
 
   // Read source directory contents
-  const entries = fs.readdirSync(src, {withFileTypes: true});
+  const entries = fs.readdirSync(src, { withFileTypes: true });
 
   for (const entry of entries) {
     const srcPath = path.join(src, entry.name);
@@ -44,17 +44,17 @@ function copyRecursive(src, dest) {
  * Main function to execute the copy operation
  */
 function main() {
-  console.log('🚀 Starting CJS types copy operation...');
+  console.log("🚀 Starting CJS types copy operation...");
   console.log(`📂 Source: ${sourceDir}`);
   console.log(`📂 Destination: ${destDir}`);
-  console.log('');
+  console.log("");
 
   try {
     copyRecursive(sourceDir, destDir);
-    console.log('');
-    console.log('✅ Copy operation completed successfully!');
+    console.log("");
+    console.log("✅ Copy operation completed successfully!");
   } catch (error) {
-    console.error('❌ Error during copy operation:', error.message);
+    console.error("❌ Error during copy operation:", error.message);
     process.exit(1);
   }
 }

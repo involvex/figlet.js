@@ -1,4 +1,7 @@
-declare type CallbackFunction<T = string> = (error: Error | null, result?: T) => void;
+declare type CallbackFunction<T = string> = (
+  error: Error | null,
+  result?: T,
+) => void;
 
 declare interface FigletDefaults {
   font: FontName;
@@ -17,22 +20,49 @@ declare class FigletFont {
 }
 
 declare interface FigletModule {
-  loadFont: (font: FontName, callback?: CallbackFunction<FontMetadata>) => Promise<FontMetadata | null>;
+  loadFont: (
+    font: FontName,
+    callback?: CallbackFunction<FontMetadata>,
+  ) => Promise<FontMetadata | null>;
   loadFontSync: (font: FontName) => FontMetadata;
   fonts: (callback?: CallbackFunction<FontName[]>) => Promise<FontName[]>;
   fontsSync: () => FontName[];
   parseFont: (font: FontName, data: string, override?: boolean) => FontMetadata;
-  preloadFonts: (fonts: FontName[], callback?: (error?: Error) => void) => Promise<void>;
+  preloadFonts: (
+    fonts: FontName[],
+    callback?: (error?: Error) => void,
+  ) => Promise<void>;
   loadedFonts: () => string[];
   clearLoadedFonts: () => void;
   textSync: (text: string, options?: FigletOptions) => string;
-  text: (text: string, optionsOrFontOrCallback?: FigletOptions | FontName | CallbackFunction<string>, callback?: CallbackFunction<string>) => Promise<string>;
+  text: (
+    text: string,
+    optionsOrFontOrCallback?:
+      | FigletOptions
+      | FontName
+      | CallbackFunction<string>,
+    callback?: CallbackFunction<string>,
+  ) => Promise<string>;
 
-  (text: string, optionsOrFontOrCallback?: FigletOptions | FontName | CallbackFunction<string>, callback?: CallbackFunction<string>): Promise<string>;
+  (
+    text: string,
+    optionsOrFontOrCallback?:
+      | FigletOptions
+      | FontName
+      | CallbackFunction<string>,
+    callback?: CallbackFunction<string>,
+  ): Promise<string>;
 
   figFonts: Record<string, FigletFont>;
   defaults: (opts?: Partial<FigletDefaults>) => FigletDefaults;
-  metadata: (fontName: FontName, callback?: (error: Error | null, fontOptions?: FontMetadata, comment?: string) => void) => Promise<[FontMetadata, string] | null>;
+  metadata: (
+    fontName: FontName,
+    callback?: (
+      error: Error | null,
+      fontOptions?: FontMetadata,
+      comment?: string,
+    ) => void,
+  ) => Promise<[FontMetadata, string] | null>;
 }
 
 declare interface FigletOptions {
@@ -75,7 +105,7 @@ declare interface FontMetadata {
 }
 
 declare type FontName =
-  "1Row"
+  | "1Row"
   | "3-D"
   | "3D Diagonal"
   | "3D-ASCII"
@@ -98,7 +128,12 @@ declare type FontName =
   | "Tinker-Toy"
   | string;
 
-declare type KerningMethods = "default" | "full" | "fitted" | "controlled smushing" | "universal smushing";
+declare type KerningMethods =
+  | "default"
+  | "full"
+  | "fitted"
+  | "controlled smushing"
+  | "universal smushing";
 
 declare type PrintDirection = -1 | 0 | 1;
 
@@ -112,7 +147,7 @@ declare namespace figlet {
     FontMetadata,
     FontName,
     KerningMethods,
-    PrintDirection
+    PrintDirection,
   };
 }
 

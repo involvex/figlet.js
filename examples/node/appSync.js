@@ -20,5 +20,5 @@ console.log(
     font: "Standard",
     horizontalLayout: "full",
     verticalLayout: "full",
-  })
+  }),
 );

@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
-import {fileURLToPath} from "url";
-import {renamedFonts} from '../src/renamed-fonts.js';
+import { fileURLToPath } from "url";
+import { renamedFonts } from "../src/renamed-fonts.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,22 +11,20 @@ const exportDir = path.join(__dirname, "../importable-fonts/");
 
 function flipKeysAndValues(obj) {
   return Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => [`${value}.flf`, `${key}.flf`])
+    Object.entries(obj).map(([key, value]) => [`${value}.flf`, `${key}.flf`]),
   );
 }
 
 function writeImportFile(name, fontData) {
-  fs.writeFileSync(
-    path.join(exportDir, name.replace(/flf$/, "js")),
-    fontData,
-    {encoding: "utf-8"}
-  );
+  fs.writeFileSync(path.join(exportDir, name.replace(/flf$/, "js")), fontData, {
+    encoding: "utf-8",
+  });
 
   const fontTypeData = `declare const fontData: string;\nexport default fontData;\n`;
   fs.writeFileSync(
     path.join(exportDir, name.replace(/flf$/, "d.ts")),
     fontTypeData,
-    {encoding: "utf-8"}
+    { encoding: "utf-8" },
   );
 }
 
